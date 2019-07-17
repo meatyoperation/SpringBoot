@@ -3,6 +3,8 @@ package com.springboot.urlShortener;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.validator.routines.UrlValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +19,8 @@ import com.google.common.hash.Hashing;
 public class UrlController {
 	
 	private UrlRepository urlRepository;
-	
+	@Autowired
+	private Environment env;
 	public UrlController(UrlRepository urlRepository) {
 		this.urlRepository = urlRepository;
 	}
@@ -46,7 +49,7 @@ public class UrlController {
 		else {
 			throw new RuntimeException("Invalid Url");
 		}
-		return "http://localhost:8080/url/" + shorturl;
+		return "http://localhost:" + env.getProperty("server.port") + "/url/" + shorturl;
 	}
 
 }
